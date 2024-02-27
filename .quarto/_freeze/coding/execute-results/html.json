@@ -1,0 +1,14 @@
+{
+  "hash": "dc41f1eca690f2f52545ecaf4839599f",
+  "result": {
+    "markdown": "---\ntitle: \"Code Respository\"\nformat: html\nexecute: \n  code-fold: true\n  code-summary: \"show the code\"\n---\n\n\n## Welcome to my personal collection of code\n\nAs I've started to lean into R, I've come to collect a series of files containing code scattered across my laptop. I wanted to create this page so I could have an evergreen collection of my work, available to me or anyone else looking for some accesible code.\n\n## Figures (density plots, boxplots, manhattan plots, QQ Plots)\n\n## **Density Plots** <br> I love using ggplot for aesethic graphics and figures. It's highly customizable and because it has code for so many plot types, you can make many figures look like they go together seamlessly.\n\n\n::: {.cell}\n\n```{.r .cell-code}\n#|code-fold: true\n#|code-summary: \"Show the code\"\n```\n:::\n\n\n##install packages install.packages(\"tidyverse\") install.packages(\"ggplot2\")\n\n##load libraries library(ggplot2) library(tidyverse)\n\n##load input files data\\<-read.csv(\"input.csv\", header=TRUE)\n\n##make density plot basicplot\\<-ggplot(data, aes(x=xvariable, fill=yvariable))\n\n##customize your plot with aestetics basicplot+geom_density(alpha=0.6)+theme_minimal()+labs(title=\"STitle\") +scale_fill_discrete(name=\"LegendName\") +theme(text = element_text(size=22)) +scale_fill_brewer(palette = \"GnBu\")\n\n````         \n```\n##install packages \ninstall.packages(\"tidyverse\") \ninstall.packages(\"ggplot2\")\n\n##load libraries \nlibrary(ggplot2) \nlibrary(tidyverse)\n````\n\n## GWAS Analysis\n\n## NAM Analysis\n\n## Data QC (Imputation, inspection, visualizing)\n\n------------------------------------------------------------------------\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

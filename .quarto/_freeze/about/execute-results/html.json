@@ -1,0 +1,14 @@
+{
+  "hash": "5d2d66ebd999a7227769f69861af4b4e",
+  "result": {
+    "markdown": "---\ntitle: \"\"\nfomat: html\neditor: visual\ndate: 02/24/2024\n---\n\n\nSamantha (Sam) Radermacher\n\nI am a quantitative geneticist who specializes in seed composition traits in soybean by leveraging various population structures to detect genetic architecture underlying desirable traits to improve yield, nutritional components, and industrial applications.\\\n\\\nI have my Masters of Science in Plant Sciences from University of Missouri and my Bachelor in Science in Environmental Science from University of Minnesota. My combined 6 years of education and decade of work experience.\n\nI consider my brain equal parts scientifically-minded and creative-communication, which is a strength of mine.\n\n![](headeshota%20(4).jpg){fig-align=\"right\" width=\"3in\"}\n\n\n::: {.cell}\n\n```{.r .cell-code}\n1 + 1\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 2\n```\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

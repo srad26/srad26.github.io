@@ -1,0 +1,15 @@
+{
+  "about.qmd": {
+    "about.html": "39694f4c",
+    "about.tex": "5c4f8d64"
+  },
+  "index.qmd": {
+    "index.html": "6d647ddb"
+  },
+  "coding.qmd": {
+    "coding.html": "b569b5c0"
+  },
+  "projects.qmd": {
+    "projects.html": "f10db26e"
+  }
+}
