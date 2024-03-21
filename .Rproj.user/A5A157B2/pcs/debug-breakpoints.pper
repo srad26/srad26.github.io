@@ -1,0 +1,36 @@
+{
+    "debugBreakpointsState": {
+        "breakpoints": [
+            {
+                "id": 1,
+                "path": "C:/Users/sgrfmd/OneDrive - University of Missouri/Desktop/Lab Documents/GWAS/Figures & Tables/Manhattan Plots CMPlot/CMplots_code.R",
+                "line_number": 17,
+                "function_steps": "",
+                "function_name": "toplevel",
+                "state": 1,
+                "editor_state": 1,
+                "editor_line_number": 17,
+                "is_pending_debug_completion": false,
+                "needs_updated_steps": false,
+                "type": 1,
+                "is_package_breakpoint": false,
+                "package_name": ""
+            },
+            {
+                "id": 2,
+                "path": "C:/Users/sgrfmd/OneDrive - University of Missouri/Desktop/Lab Documents/GWAS/Figures & Tables/Manhattan Plots CMPlot/CMplots_code.R",
+                "line_number": 20,
+                "function_steps": "",
+                "function_name": "toplevel",
+                "state": 1,
+                "editor_state": 1,
+                "editor_line_number": 20,
+                "is_pending_debug_completion": false,
+                "needs_updated_steps": false,
+                "type": 1,
+                "is_package_breakpoint": false,
+                "package_name": ""
+            }
+        ]
+    }
+}

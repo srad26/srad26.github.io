@@ -1,0 +1,30 @@
+library(readr)
+library(tidyverse)
+require(readxl)
+library(ParentOffspring)
+
+testdata<-read.delim("pop_2_taxa_filter_post_imputation.hmp.txt", header=TRUE)
+testdata<-data.frame(testdata)
+head(testdata)
+
+#For calling parentaloffpspringlevel
+POtest <- ParentOffspring(testdata, plot = TRUE) #changed to work for our data
+write.csv( POtest, "pop2_taxa_filter_ParOff.csv")
+
+testpop1 <- testdata[,c(1,4,5:14)]
+head(testpop1)
+testpop2 <- testdata[,c(2,4,15:24)]
+head(testpop2)
+testpop3 <- testdata[,c(3,4,25:34)]
+head(testpop3)
+
+
+
+
+#For calling parentaloffpspringlevel
+POtest2 <- ParentOffspring(testpop2, plot = TRUE)
+write.csv( POtest2, "pop2_values.csv")
+
+#For calling parentaloffpspringlevel
+POtest3 <- ParentOffspring(testpop3, plot = TRUE)
+write.csv( POtest3, "pop3_values.csv")

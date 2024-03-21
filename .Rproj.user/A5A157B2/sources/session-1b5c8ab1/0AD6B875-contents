@@ -1,0 +1,28 @@
+project:
+  type: website
+execute: 
+  freeze: auto
+
+website:
+  title: "Samantha Gene Radermacher"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: about.qmd
+        text: CV
+      - href: coding.qmd
+        text: Code 
+      - href: projects.qmd
+        text: Projects
+  sidebar: 
+    - title: "Sidebar"
+      style: "docked"
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+
+editor: visual
+
