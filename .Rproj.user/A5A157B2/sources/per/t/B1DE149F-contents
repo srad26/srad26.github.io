@@ -1,0 +1,39 @@
+project:
+  type: website
+execute: 
+  freeze: auto
+website:
+  title: "Samantha Gene Radermacher"
+  navbar: 
+    background: primary
+    left:
+      - href: index.qmd
+        text: Home
+      - href: about.qmd
+        text: About Me
+      - href: coding.qmd
+        text: Coding
+      - href: projects.qmd
+        text: Projects
+
+  sidebar: 
+
+    - id: Coding
+      title: "Coding"
+      style: "docked"
+      background: light
+      contents:
+        - AccessibleFigures.qmd
+        - boxplots.qmd
+        - Manhattanplots.qmd
+format:
+  html:
+    grid: 
+      sidebar-width: 300px
+      body-width: 900px
+      margin-width: 300px
+      gutter-width: 1.5rem
+    theme: minty
+    css: styles.css
+    toc: true
+editor: visual

@@ -10,5 +10,14 @@
   },
   "projects.qmd": {
     "projects.html": "1adc044d"
+  },
+  "AccessibleFigures.qmd": {
+    "AccessibleFigures.html": "ac3010ce"
+  },
+  "boxplots.qmd": {
+    "boxplots.html": "109f4534"
+  },
+  "Manhattanplots.qmd": {
+    "Manhattanplots.html": "08d1a579"
   }
 }
