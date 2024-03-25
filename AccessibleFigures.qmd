@@ -1,0 +1,17 @@
+---
+title: "Accessible Figures"
+about:
+  template: solana
+format: html
+editor: visual
+---
+
+Accessibility is important in any scientific figure, but not always considered. Please consider the various ways to make your figures more accessible.
+
+#### ***Color-Blind Friendly***
+
+Make your figure color-blind friendly by using [R's Color Brewer](https://r-graph-gallery.com/38-rcolorbrewers-palettes) color pallet.
+
+![](Brewer%20Colorblind%20Friendly.jpeg){width="3.35in"}
+
+### 

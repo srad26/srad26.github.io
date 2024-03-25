@@ -1,0 +1,14 @@
+{
+  "hash": "1895ff1a363dbfebed205e35a5e7a17c",
+  "result": {
+    "markdown": "---\ntitle: \"Hello There!\"\n---\n\n\nThis is a Quarto website.\n\nTo learn more about Quarto websites visit <https://quarto.org/docs/websites>.\n\n\n::: {.cell}\n\n```{.r .cell-code}\n1 + 1\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 2\n```\n:::\n:::\n\n---\ntitle: \"Hello There!\"\nabout: \n  template: solana\n  image: headeshota (4).jpg\n  image-width: 20em\n  links: \n    - icon: github\n      text: Github\n      href: https://github.com/srad26\n    - icon: linkedin\n      text: linkedIn\n      href: https://www.linkedin.com/in/sradermacher/\n---\n\n\nI am a current graduate student studying quantitative geneticist specializing in seed composition traits in soybean under the direction of [Dr. Jason Gillman](https://www.ars.usda.gov/people-locations/person/?person-id=43796). Through my research, I have analyzed large quantitative data sets containing over 60 phenotypic traits to uncover genetic architecture underlying seed composition traits in soybean. The best parts of my work revolve around data analytics and interpretation of results. I love translating big data sets into tangible and meaningful information. This website is one of my many personal endevors to improve my coding and analytical abilities. Feel free to browse my website, check out my recent projects, or borrow code for your next project.\n\n## Education\n\n**University of Missouri** [Expected Graduation: 08/2024]{.cvdate} <br> *M.S. in Plant, Insect, and Microbial Sciences*\n\n**University of Minnesota** [Graduated: 05/2017]{.cvdate} <br> *B.S. in Environmental Sciences, Policy, and Management*\n\n## Contact Me!\n\nTo contact me, please reach out through my university email at sgrfmd\\@umsystem.edu.\n\n------------------------------------------------------------------------\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

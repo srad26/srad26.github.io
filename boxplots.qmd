@@ -1,0 +1,68 @@
+---
+title: "Boxplots"
+about:
+  template: solana
+format: 
+  html:
+    theme: minty
+    css: styles.css
+categoriges: 
+  - code
+draft: false
+freeze: true
+---
+
+# test
+
+# test asdgiasdh aspodeiasuhdr otest asdgiasdh aspodeiasuhdr otest asdgiasdh aspodeiasuhdr otest asdgiasdh aspodeiasuhdr otest asdgiasdh aspodeiasuhdr otest asdgiasdh aspodeiasuhdr otest asdgiasdh aspodeiasuhdr otest asdgiasdh aspodeiasuhdr o
+
+I enjoy creating boxplots in R because it gives you so many options for customization, as well as the option to run statistics on your plot to demonstrate the significance between all variables. I have been using [ggplot2](https://ggplot2.tidyverse.org/) libraries to make my boxplots. Below is an example plot and code for you to make one yourself! For this code, you will need to create input code in (.csv) format; an example input file can be seen below.
+
+![In this case, column A contains the same SNP for all values, column B contains the material name, column C contains the allele present for that material, at that SNP (I removed any "N" or missing SNPs) and column D contains the content of protein each line possesses.](/boxplotinputcode.JPG){fig-align="left" width="5.41in"}
+
+![](/boxplotexample.JPG){fig-align="left"}
+
+``` r
+##install packages
+install.packages("ggprism")
+install.packages("patchwork")
+install.packages("magrittr")
+install.packages("tidyverse")
+install.packages("ggplot2")
+install.packages("extrafont")
+
+##load libraries
+library(ggplot2)
+library(tidyverse)
+library(viridis)
+library(magrittr)
+library(ggprism)
+library(patchwork)
+library(ggsignif)
+library(extrafont)
+loadfonts(device="win")
+
+##set working directory
+
+##read in data file and set variables
+data<-read.csv("Inputfile.csv", header=TRUE)
+XVAR<-data$varaible_A
+YVAR<-data$varaible_B  
+xaxis<-"x-axis name-variable_A"
+yaxis<-"y-axis name-variable_B"
+
+##calculate median value for later statistics
+med<-aggregate(XVAR ~ YVAR, data, median)
+
+##create a boxplot
+basic_plot<-ggplot(data, aes(x=XVAR, y=YVAR, color=YVAR))+geom_boxplot(aes(color=YVAR))+geom_jitter(aes(color=YVAR))+stat_boxplot(mapping=NULL, data=NULL, geom="errorbar", width=0.3)+geom_signif(comparisons=list(c("C", "T")), map_signif_level = TRUE, textsize = 12, family = "TT Times New Roman", color="black")
+
+##perform statistics on the boxplot
+stat_boxplot<-basic_plot+geom_text(data=med, aes(label=XVAR), color="black", size=5 +0.08, vjust=0, family="Times New Roman")
+
+##adjust the limits of the x-axis
+stat_boxplot+xlim(0.0,0.5)
+
+##customize the boxplot with your chosen aestethics 
+ZZZ<-ZZ+theme_minimal(base_size = 12, base_family = "TT Times New Roman")+coord_flip()+labs(x="xaxis", y="yaxis")+scale_color_discrete("Allele")+theme(axis.text.x=element_text(color = "black"))+theme(axis.text.y = element_text(color="black"))An example of a boxplot created using the code below via ggplot2.An example of a boxplot created using the code below via ggplot2.
+```
