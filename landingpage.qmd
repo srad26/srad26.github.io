@@ -1,0 +1,29 @@
+---
+title: "Hello There!"
+sidebar: false
+about: 
+  template: solana
+  image: headeshota (4).jpg
+  image-width: 20em
+  links: 
+    - icon: github
+      text: Github
+      href: https://github.com/srad26
+    - icon: linkedin
+      text: linkedIn
+      href: https://www.linkedin.com/in/sradermacher/
+---
+
+I am a senior research specialist with the University of Missouri [Crop Physiology Lab](https://cafnrfaculty.missouri.edu/cropphysiology/) where I design and execute analytic techniques to better understand biological and genetic mechanisms throughout plant systems. While I certainly spend time in the field and in the lab, I specialize in data analysis and visualization. love translating big, messy data sets into a more approachable and meaningful format. I want to lower the barrier to entry into a highly technical area of work by sharing my experiences and any tips or tricks I pick up along the way. Feel free to check out my recent projects or borrow code for your next project.
+
+## Education
+
+**University of Missouri** [Expected Graduation: 08/2024]{.cvdate} <br> *M.S. in Plant, Insect, and Microbial Sciences*
+
+**University of Minnesota** [Graduated: 05/2017]{.cvdate} <br> *B.S. in Environmental Sciences, Policy, and Management*
+
+## Contact Me!
+
+To contact me, please reach out through my university email at sgrfmd\@umsystem.edu.
+
+------------------------------------------------------------------------
