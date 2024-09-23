@@ -1,0 +1,64 @@
+##install package
+remotes::install_version("ParentOffspring", version="1.0")
+
+##load library
+library(ParentOffspring)
+
+##read in data file where genotypes are shown in 2 letter format ("AA") and missing values are represented with 2 dashes ("--")
+genoMat<-read.csv("pop1_preimp.csv", header=TRUE)
+
+##run code, see original file for details of what each step does
+ParentOffspring = function(genoMat, plot=TRUE){
+  if(class(genoMat)=="data.frame")  genoMat=as.matrix(genoMat)
+  dimension = dim(genoMat)
+  if(dimension[1]<1) stop
+  if(dimension[2]<3) stop
+  aa=unlist(lapply(unlist(genoMat), is.character))
+  if(min(aa)==0) stop
+  if(min(nchar(unlist(genoMat))==2) ==0) stop 
+  geno <- genoMat
+  geno <- geno[(geno[,1]) == (geno[,2]), ]
+  geno <- geno[(substr(geno[,1],1,1)) == (substr(geno[,1],2,2)),]
+  geno <- geno[(geno[,1])!="--",]
+  dimension <- dim(geno)
+  markersN <- dimension[1]
+  offspringN <- dimension[2] - 2
+  if(markersN < 1) stop
+  parent <- geno[,1]
+  offspring <- geno[, -(1:2)]
+  markersValidN <- rep(0, offspringN)
+  similarityMat <- matrix(0, markersN, offspringN)
+  for (i in 1:offspringN){
+    for (i in 1:offspringN){
+      similarityMat[, i] <- (substr(parent,1,1) == substr(offspring[, i], 1, 1)) +
+        (substr(parent, 1, 1) == substr(offspring[, i], 2, 2))
+      for (j in 1:markersN){
+        if ((substr(offspring[j, i], 1, 1) =="-") ||(substr(offspring[j, i], 2, 2) == "-") ){
+          similarityMat[j, i] <- NA
+        }  
+      }
+      markersValidN[i] <-  markersN - sum(is.na(similarityMat[, i]))
+    }
+    for (j in 1:markersN){
+      if ((substr(offspring[j, i], 1, 1) =="-") ||(substr(offspring[j, i], 2, 2) == "-") ){
+        similarityMat[j, i] <- NA
+      }  
+    }
+    similarityMat <- similarityMat/2;
+    similarity <- round(colMeans(similarityMat, na.rm=T),2)
+    markersValidN[i] <-  markersN - sum(is.na(similarityMat[, i]))
+  }
+  similarityMat <- similarityMat/2;
+  similarity <- round(colMeans(similarityMat, na.rm=T),2)
+  if(plot==TRUE){
+    plot(1:offspringN, sort(similarity, decreasing=T), pch='*',cex=2,
+         col='red', ylim=c(0.5,1), xlab="offspring sorted by similarity", 
+         ylab='similarity', axes=FALSE)
+    axis(side = 1, at = 1:offspringN)
+    axis(side = 2, at = c(round((5:10)/10, 1), 0.95, 0.99))
+    abline(h=c(0.9, 0.95,0.99),lty=2,col="blue", lwd=2)
+    title("Similarity to the Parents")
+    box()
+  }
+  return(similarity)
+}

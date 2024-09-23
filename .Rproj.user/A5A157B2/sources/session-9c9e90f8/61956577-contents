@@ -1,0 +1,41 @@
+#create a character vector
+#trait_list<- colnames(data)
+trait_list<-list('Alanine','Arginine','Ash')
+trait_list=as.vector(trait_list)
+is.vector(trait_list)
+data=as.vector(data)
+
+#create an empty list to store results
+results_pvalue<-list()
+results_LOD_score<-list()
+results_manhattan<-list()
+
+#bare bones
+#for (var_name in my_vec){
+  #code goes here
+ # print(paste("Var name:", var_name))
+#}
+
+for (i in 1:ncol(data)){
+  #Phenotype=as.numeric(data$Alanine) #define the phenotype of interest
+  my_gwas=gwas2(y=Phenotype, gen=gen, fam=family, chr=chr,EIG=eigNAM) #run the GWAS/NAM analysis
+  plot(my_gwas)
+  #Sys.sleep(30)
+  pval = my_gwas$PolyTest$pval
+  results_pvalue[[i]]<-pval
+}
+
+results_pvalue
+capture.output(results_pvalue, file="pvalue.csv", options(max.print = .Machine$integer.max))
+
+
+my_list<-list(item,item,item)
+assign("variable_1",trait_list[[1]])
+
+for (i in 1:length(trait_list)){
+  assign(paste0("variable_",i), trait_list[[i]])
+}
+i<-1 #create running index
+repeat{
+  data[ ,i]<-data[ ,i]+gwas2(y=Phenotype, gen=gen, fam=family, chr=chr,EIG=eigNAM)
+ }

@@ -1,0 +1,28 @@
+{
+    "id": "4BAE2D34",
+    "path": null,
+    "project_path": null,
+    "type": "object_explorer",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1716245415446.0,
+    "source_on_save": false,
+    "relative_order": 7,
+    "properties": {
+        "id": "4b6184a700b144b98ec40b9a7c649a3b",
+        "name": "Alanine_gwas",
+        "title": "Alanine_gwas",
+        "language": "R",
+        "source_window_id": "",
+        "Source": "Source"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 7874299994888614709,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1716245415446,
+    "read_only": false,
+    "read_only_alternatives": []
+}

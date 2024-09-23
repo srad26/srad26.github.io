@@ -1,0 +1,135 @@
+install.packages("Rtools43")
+install.packages("ABHgenotypeR")
+library(ABHgenotypeR)
+
+
+######################################
+#ABHGenotypeR section
+
+genotypes <- readABHgenotypes(file.choose())
+#samadded
+genotypes <-from_tassel_pop_1_oil_hmp
+
+plotGenos(genotypes)
+
+
+postImpGenotypes <- imputeByFlanks(genotypes)
+reportGenos(genotypes)
+reportGenos(postImpGenotypes)
+
+#Plot before and after imputing 
+plotGenos(genotypes)
+plotGenos(postImpGenotypes)
+
+#remove undercalled heterozygous alleles
+#I chose a much smaller window that in GBS studies because Illumina marker data is sparse
+ErrCorr1Genotypes <- correctUndercalledHets(postImpGenotypes, maxHapLength = 5)
+ErrCorr2Genotypes <- correctStretches(ErrCorr1Genotypes, maxHapLength = 5)
+
+#Plot the various error corrections to see differences 
+plotGenos(genotypes)
+plotGenos(ErrCorr1Genotypes)
+plotGenos(ErrCorr2Genotypes)
+
+#This is a way to look at marker density, I don't find it useful
+#plotMarkerDensity(genos = ErrCorr2Genotypes)
+
+#Write the results out, have to change the file name as appropriate
+writeABHgenotypes(ErrCorr2Genotypes, outfile="KB20_08postABH.csv")
+
+###########################################################################################################
+#All of this section is for R/QTL. Specifically making a genetic map. You won't use this for BSA, but you will for your NAM populations
+
+
+library(qtl)
+df <- read.cross("csv",,file.choose(), F.gen=4, map.function=c("kosambi"),
+                 estimate.map=T, error.prob = 0.05)
+summary(df)
+plot(df)	
+plotMissing(df)	
+plot.map(df)	
+
+df <- est.rf(df)	
+plotRF(df)	
+par(mfrow=c(1,2), las=1)
+plot(ntyped(df), ylab="No. typed markers", main="No. genotypes by individual")	
+plot(ntyped(df, "mar"), ylab="No. typed individuals", main="No. genotypes by marker", ylim = c(0,200))	
+	
+#This is very I would normally remove bad individuals, but I typically do that in TASSEL and ParentOffpsring now
+df2 <- df 
+
+par(mfrow=c(1,1), las=1)
+cg <- comparegeno(df)	
+hist(cg[lower.tri(cg)], breaks=seq(0, 1, len=101), xlab="No. matching genotypes")	
+rug(cg[lower.tri(cg)])	
+
+wh <- which(cg > 0.75, arr=TRUE)	
+wh <- wh[wh[,1] < wh[,2],]	
+wh	
+#too many to drop. probably bad genotype calling of markers. Not running the commands to drop them. 
+
+
+#Drop duplicated markers, which are uninformative for mapping purposes. I have it set to exact only
+todrop <- print(dup <- findDupMarkers(df, exact.only=T))
+df4 <- drop.markers(df, unlist(dup)) #How many markers to drop?
+summary(df)
+summary(df4)
+plot(df4)
+
+
+#Drop distorted segregation using < 1e-10 and Bonoferroni correction. These settings are context dependent!
+gt <- geno.table(df)
+gt[gt$P.value < 0.05/totmar(df),]	
+todrop2 <- rownames(gt[gt$P.value < 1e-10,])	
+df5 <- drop.markers(df4, todrop2) 
+plot.map(df5)
+summary(df5)
+#Need to do this to look for marker distortion, sometimes it identifies markers to drop, but depends on knowing generation, selection, etc. 
+
+#Estimate rf	
+df4 <- est.rf(df4)
+ 
+#Normally I would do the command below, but I can't do this for a F.gen=5
+#checkAlleles(df5, threshold=5) 
+plotRF(df4) #plot it out to see patterns. 
+
+#Plot LOD scores, essential to identifying problems
+par(mfrow=c(1,1))	
+rf <- pull.rf(df5)	
+lod <- pull.rf(df5, what="lod")	
+plot(as.numeric(rf), as.numeric(lod), xlab="Recombination fraction", ylab="LOD score")	
+
+
+#Drop One Marker At A Time, attempt to identify places I can shrink gaps
+dropone <- droponemarker(df4, error.prob=0.05)
+par(mfrow=c(2,1))
+plot(dropone, lod=1, ylim=c(-100,0))
+plot(dropone, lod=2, ylab="Change in chromosome length")
+write.csv(dropone, file="dropone") #ultimately decided this map is so sparse I'd only drop one marker
+
+#Take the output of the dropone and pull the bad markers	
+#Then re-estimate the map 	
+#Replace the map and run a summary	
+badmar <- c("Gm04_50498533")
+df5 <- drop.markers(df4, badmar)	
+newmap <- est.map(df5, error.prob=0.05)
+par(mfrow=c(1,2))	
+plot.map(df4)
+plot.map(df5)
+df5 <-replace.map(newmap)
+
+summaryMap(df5) #final number of markers is 230 (yikes!)
+
+
+write.cross(df5, format="csv", file="KB20_8_FINAL.csv")
+write.csv(summaryMap(df), file="dfmapSummary.csv")
+write.csv(summaryMap(df4), file="df4mapSummary.csv")
+write.csv(summaryMap(df5), file="KB20_8_FINALdf5mapSummary.csv")
+par(mfrow=c(1,1))
+plot.map(df5)
+
+#To check for better marker orders, using 4 marker segments 
+rip_df5 <- ripple(df5, window=4, method=c("likelihood"), error.prob=0.05, map.function=c("kosambi"))
+rip_df5
+
+write.csv(rip_df5, file="rip_df5.csv")

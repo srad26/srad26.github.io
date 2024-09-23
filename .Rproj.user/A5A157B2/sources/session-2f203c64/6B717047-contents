@@ -1,0 +1,86 @@
+---
+title: "Accessible Figures"
+author: "Samantha Radermacher"
+date: "2024-04-12"
+image: "Brewer Colorblind Friendly.jpeg"
+about:
+  template: solana
+format: html
+editor: visual
+# draft: false
+categories:
+  - code
+  - beginner
+  - accessibility
+freeze: true
+---
+
+I strongly believe accessibility should be considered when preparing to share data. Accessibility is multi-faceted and should be considered for a number of angles. Consider the following prompts, and add more considerations to the list as new ideas are sparked:
+
+-   Is my figure color-blind friendly?
+
+-   Is the text large enough to read, even with impaired vision?
+
+-   If there are multiple variable represented in the figure, are you using texture and color simultaneously to help the viewer delineate them?
+
+-   Are your axis labeled, and free of acronyms?
+
+-   Is your caption descriptive enough to stand alone and free of acronyms?
+
+These are just a few questions to consider, but there can be many other ways to develop accessible figures, I would love to hear what factors you have found important to be mindful of in your own work so I can add to this list.
+
+#### ***Color-Blind Friendly***
+
+Make your figure color-blind friendly by using [R's Color Brewer](https://r-graph-gallery.com/38-rcolorbrewers-palettes) color palette. The easiest way to incorporate this palette into your code is by installing the package, and loading it alongside any other libraries you might be using. You can see an example of how I incorporate this palette into my graphics below.![A graphic showing the various color palette options and their corresponding codes.](Brewer%20Colorblind%20Friendly.jpeg){width="2in"}
+
+\`\`\`
+
+```{r}
+## install the package
+install.packages("RColorBrewer")
+
+## load the library
+library(RColorBrewer)
+
+## recall the color options
+display.brewer.all()
+
+```
+
+\`\`\`
+
+You can then incorporate the palette into your graphics. Here is an example of a density plot where I used the Brewer Palette.
+
+\`\`\`
+
+```{r}
+## installed packages
+install.packages("tidyverse")
+install.packages("ggplot2")
+
+# load  libraries
+library(ggplot2)
+library(tidyverse)
+library (RColorBrewer)
+
+# set working directory
+
+## read in my input file (.csv) 
+data<-read.csv("SAMNAM_Phenotypes_Density_Plot_Input.csv", header=TRUE)
+head(data)
+
+# filter data as neededed
+new<-filter(data,Location== "RB8")
+new2<-filter(new, Population < '8')
+
+## Created density plot using input file data
+XVAR<-new2$Protein
+plot<-ggplot(new2, aes(x=XVAR, fill=Population)) +geom_density(alpha=0.5)+theme_minimal(base_size = 12, base_family = "TT Times New Roman")+theme(text = element_text(size=22)) 
+PLOT<-plot+ xlim(30,50)+labs(title="Protein Content (%) at RB8", x="Protein Content (%)") + scale_fill_discrete(name="Population") 
+
+## used the "PiYG" color palete from Brewer
+PLOT+scale_fill_brewer(palette = "PiYG")
+
+```
+
+### ![The resulting density plot with the "PiYG" color palette selected](Images/Protein_Across_Populations_RB8.tiff)

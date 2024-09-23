@@ -1,0 +1,85 @@
+                    #### GWAS USING THE NAM PACKAGE ####
+                    ####################################
+
+                    
+                
+#install.packages("NAM")
+library(NAM)
+                    
+#Setting working directory                    
+setwd()
+
+
+#Genotypic data  (markers in row 1, genotype in column 1)
+G = read.csv(file.choose(),header=TRUE)
+G = Import_data(file.choose(), type="HapMap")
+G<-na.omit(G)
+G=as.numeric(G)
+G = data.matrix(G)
+gen =G$Material
+chr = G$chromosome
+is.matrix(gen)
+
+#Phenotypic data
+data=read.csv(file.choose(), header=TRUE)
+data<-na.omit(data)
+Phe1=as.numeric(data$Alanine)
+Phe2=as.numeric(data$Arginine)
+Fam=as.numeric(data$Family)
+# Family
+family = as.numeric(data$FAMILY)
+
+#Phenotypic data as numeric
+mat_clm16 = as.numeric(y$MAT16_CLM)
+oil_clm16 = as.numeric(y$OIL16_CLM)
+pro_clm16 = as.numeric(y$PROTEIN16_CLM)
+
+
+##updated 051624 for SAMNAM Project
+chr =c(240,302,257,244,265,289,298,350,238,290,252,232,345,251,271,213,237,341,292,249)
+is.numeric(chr)
+
+
+#GWAS model#
+my_gwas = gwas2(y=data,gen=gen,fam=family,chr=chr)
+my_gwas = gwas(y=data,gen=gen, fam=NULL, chr=NULL, window=NULL, fixed=FALSE)
+
+#Plot the GWAS
+
+###FDR###
+plot(my_gwas, FDR=0.05)
+
+###BONFERRONI###
+
+num_markers = 5768
+plot(my_gwas, alpha=0.05/num_markers)
+
+
+#LRT score of each SNP
+SCORE = my_gwas_blue$PolyTest$lrt
+
+#$-LOG(P-value)$
+Pval = my_gwas$PolyTest$pval
+
+#Amount of variance explained by each marker
+Genetic_Var_each_SNP = my_gwas$PolyTest$var.snp
+Var_Explained_by_SNP = Genetic_Var_each_SNP / var(mat_16clm)
+
+
+#Export CSV file with all SNP statistics
+write.csv( my_gwas$PolyTest, "mat_clm16_snp_scores.csv")
+
+
+##### GWAS USING COVARIATE #####
+
+cov = read.table(file.choose(),header=TRUE,sep=",")
+
+cov_a = as.numeric(cov$BLUE)
+
+
+my_gwas = gwas2 (y,gen=gen,fam=family,chr=chr,cov=cov_a)
+
+plot(my_gwas, FDR=0.05)
+
+
+

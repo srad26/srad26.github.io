@@ -1,0 +1,49 @@
+
+
+#only install once
+#install.packages("CMplot")
+
+# load library
+library("CMplot")
+
+#set working directory to your chosen location##
+setwd("LOCATION")
+
+
+Y=read.csv(choose.files(), header=TRUE)
+
+# for SNP marker plots
+> CMplot(pig60K,plot.type="d",bin.size=1e6,chr.den.col=c("darkgreen", "yellow", "red"),file="jpg",file.name="",dpi=300,
+         main="illumilla_60K",file.output=TRUE,verbose=TRUE,width=9,height=6)
+#for Manhattan plots
+
+CMplot(Y, plot.type="m",threshold=3e-4)
+
+#also for Manhattan plots, with my options
+CMplot(Y, plot.type = "m", threshold = 3e-4, file="tiff", file.name="Cd", main="Cd (mg/kg)")
+
+##if you want a title use the line below for Manhattan plot
+##other perameters to use are in the Github repository: https://github.com/YinLiLin/CMplot
+
+
+#For QQ plots, many options can be manipulated to change how things look
+
+CMplot(Y, plot.type="q",threshold=3e-4, file="tiff", file.name = "Cd", main = "Cd (mg/kg)", dpi=300, col=c("dodgerblue1"))
+#A shorter version of QQ plot code
+CMplot(Y, plot.type="q", file="tiff", file.name="Alanine_QQ", main="Alanine Dry Basis (%)", dpi=300, col=c("goldenrod"))
+
+##to set the y-axis limits, add the following line as another option within the main () 
+ylim=c(0,14)
+
+#for making "y axis" equal for all traits: ylim can make adjustment based on the maximum data points 
+#in the data. First run data without mention ylim, once we know maximum Y scale point then we decide 
+#ylim limit then rerun analysis again using below code.
+
+##to make multi track QQ plots:
+#input a csv file with all the traits p.values in their own column 
+#list the traits to determine the names of the graphs in order using this next line. The "trait1" and "trait2" refer to the order of the plots, and the 
+#"Cp29P.value" is what the name of the chart will be
+
+Traits<-list(Y$B11..mg.kg., Y$Ca44..mg.kg.,Y$Cd111..mg.kg.,Y$Co59..mg.kg.,Y$Cu63..mg.kg.,Y$Fe54..mg.kg.)
+CMplot(tryme, plot.type="q", file="tiff", dpi=300, file.name="filename", col=c("dodgerblue", "goldenrod", "olivedrab", "grey30", "grey60","black", "dodgerblue2"), multracks = TRUE)
+

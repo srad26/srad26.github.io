@@ -1,0 +1,106 @@
+##Code to create density plots with ggplot 
+##witten by sam radermacher
+
+## install packages
+install.packages("tidyverse")
+install.packages("ggplot2")
+install.packages("qqman")
+# load  libraries
+library(ggplot2)
+library(tidyverse)
+library(qqman)
+# set working directory
+
+## read in input file (.csv) data file to variable name that you refer to in subsequent code
+data<-read.csv("Density Plots/AAE_Rb8_G17W_Phenotype_File.csv", header=TRUE)
+head(data)
+as.data.frame(data)
+# filter data if needed
+new<-filter(data, data$Location == "RB8")
+#new2<-filter(new, new$Family < '8')
+
+## Create density plot using input file data
+XVAR<-data$Protein
+plot<-ggplot(new2, aes(x=XVAR, fill=Population)) +geom_density(alpha=0.5)+theme_minimal(base_size = 12, base_family = "TT Times New Roman")+theme(text = element_text(size=22)) 
+plot+ xlim(30,50)+labs(title="Protein Content (%) at RB8", x="Protein Content (%)") + scale_fill_discrete(name="Population") +scale_fill_brewer(palette = "PiYG")
+
+## details about customization referred to in code above. 
+## aes --> value and variable should be changed to reflect your data
+## change alpha to change opacity of graph fill
+## theme_minimal can be switched out for other themes
+## labs can be expanded to adjust other labels
+# scale_fill_discrete adjusts legend properties and variable names
+## theme(text..) adjusts the text size for all portions of the 
+
+## ggplot(data, aes(x=value--Trait measurement, fill=other value--location)) +geom_density(alpha=.6) + theme_minimal(base_size = 12, base_family+"TT Times New Roman") + labs(title= "TITLE") + scale_fill_discrete(name="Legend", labels=c("1","2","3")) + theme(text= element_text(size=#)) + scale_fill_brewer(palette = "GnBu")
+---------------------------
+
+## code for creating boxplots and perform statistics 
+
+install.packages("ggprism")
+install.packages("patchwork")
+install.packages("magrittr")
+install.packages("tidyverse")
+install.packages("ggplot2")
+install.packages("extrafont")
+
+# Load  libraries
+library(ggplot2)
+library(tidyverse)
+library(viridis)
+library(magrittr)
+library(ggprism)
+library(patchwork)
+library(ggsignif)
+library(extrafont)
+loadfonts(device="win")
+
+## set working directory
+
+# import data(.csv) to variable name you refer to in subsequent code
+file<-read.csv("Investigating_Top_PVE_Significance.csv", header=TRUE)
+head(file)
+data1<-na.omit(file)
+data<-filter(data1, Gm13_30271391 != 'N')
+head(data)
+
+## My full code used for my boxplot figures (aka put it all together)
+XVAR<-data$Tryosine                   
+YVAR<-data$Gm17_37190607
+med<-aggregate(XVAR ~ YVAR, data, median)
+Z<-ggplot(data, aes(x=XVAR, y=YVAR, color=YVAR))+geom_boxplot(aes(color=YVAR))+geom_jitter(aes(color=YVAR))+stat_boxplot(mapping=NULL, data=NULL, geom="errorbar", width=0.3, na.rm = TRUE)+geom_signif(comparisons=list(c("C", "T")), map_signif_level = TRUE, textsize = 16, family = "TT Times New Roman", color="black", na.rm = TRUE)
+ZZ<-Z+geom_text(data=med, aes(label=XVAR), color="black", size=5 +0.08, vjust=0, family="Times New Roman")
+ZZZ<-ZZ+theme_minimal(base_size = 16, base_family = "TT Times New Roman")+coord_flip()+labs(x="Tryosine Content (%)", y="SNP: Gm17_37190607")+scale_color_discrete("Allele")+theme(axis.text.x=element_text(color = "black"))+theme(axis.text.y = element_text(color="black"))
+print(ZZZ)
+ZZZ+xlim(1.4,2)
+
+##  details on options listed in previous code
+# color= will allow you to manipulate all colors, including manual coil choices
+# geom_jitter() will add the jitter to the plot
+# coord_flip will swap the x and y coordinates
+# labs= labeling options
+# vjust=moving the median value up or down on the graph relative to the median line
+
+
+# create boxplot with input file data
+# ggplot(seed, aes(x=seed, y=ALLELE, color=ALLELE))+geom_boxplot(aes(color=ALLELE))+geom_jitter(aes(color=ALLELE))+coord_flip()
+
+# stylistic manipulation of the boxplots
+# load the plot into a vairable
+### (i.e.) PLOT<-ggplot(data, aes(x=CysAAE, y=ALLELE, color=ALLELE))+geom_boxplot(aes(color=ALLELE))+geom_jitter(aes(color=ALLELE))+coord_flip()
++theme_minimal()+theme(text=element_text(size=22))+labs(title="TITLE", x="x label", y="y label")
+
+#Performing statistics on the boxplots
++stat_boxplot(mapping=NULL, data=NULL, geom="errorbar", width=0.3)+geom_signif(comparisons=list(c("C", "T")), map_signif_level = TRUE, textsize = 8, color="black")
+ggplot(data, aes(x=CysAAE, y=ALLELE, color=ALLELE))+geom_boxplot(aes(color=ALLELE))+geom_jitter(aes(color=ALLELE))+coord_flip()+theme_minimal()+theme(text=element_text(size=22))+stat_boxplot(mapping=NULL, data=NULL, geom="errorbar", width=0.3)
+
+##significance test
+PLOT+geom_signif(comparisons=list(c("C", "T")), map_signif_level = TRUE, textsize = 8, color="black")
+
+##plotting median values of vairables
+##calculate the median value of interest
+med<-aggregate(CysAAE ~ ALLELE, data, median)
+
+#place numerical representation of median on graph
++geom_text(data=med, aes(label=CysAAE), color="black", size=5 +0.08, vjust=00)
+

@@ -1,0 +1,13 @@
+install.packages("future")
+library("future")
+
+
+#Put this at the top of your code to help it run faster. Anything below the code will run faster
+#check the number of cores in your computer, mine has eight
+availableCores()
+
+#set the number of cores to 1 less than the number of cores in your computer. If you do the full number, your computer will crash. The last core is to keep your computer awake. 
+ncores<-7
+
+#multisession=telling the computer to pull multiple cores; plan=function
+plan(multisession, workers = ncores)

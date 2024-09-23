@@ -1,0 +1,80 @@
+##lme4##
+
+install.packages("lme4")
+tools::package_dependencies("Matrix", which = "LinkingTo", reverse = TRUE)
+utils::install.packages("lme4", type = "source")
+install.packages("car")
+install.packages("lmerTest")
+install.packages("writexl")
+
+##load libraries
+library("lmerTest")
+library("Matrix")
+library("devtools"); install_github("lme4/lme4",dependencies=TRUE)
+library("car")
+library("lme4")
+library("writexl")
+## setworking directory 
+
+##Load data and variables
+Emerge <- read.table((file.choose()), header=T, sep="\t")
+Emerge <-(na.omit(Emerge))
+head(Emerge)
+variable<-Emerge$days_from_planting
+Material<-Emerge$Material
+Rep<-Emerge$Rep
+Project<-Emerge$Location
+
+#all effects are random
+Model=lmer(variable ~ (1|Material)+(1|Material:Project)+(1|Project)+(1|Rep), data=Emerge, REML=TRUE)
+ANOVA<-capture.output(ranova(Model))
+dfANOVA<-data.frame(ANOVA)
+Summary<-capture.output(summary(Model))
+dfSummary<-data.frame(Summary)
+capture.output(ANOVA, file="ANOVA_MatRand_SAMNAM_DaysAfterPlanting.txt", options(max.print = .Machine$integer.max))
+capture.output(Summary, file="Summary_MatRand_SAMNAM_DaysAfterPlanting.txt", options(max.print = .Machine$integer.max))
+#capture.output(Model,file="Model2_AllRandom_SAMNAM_Protein.txt", options(max.print = .Machine$integer.max))
+#capture.output(Model,file="Model2_AllRandom_SAMNAM_Protein.txt", options(max.print = .Machine$integer.max))
+#capture.output(ANOVA, file="ANOVA_SAMNAM_Protein.txt")
+#capture.output(Summary, file="Summary_SamNAM_Protein.txt", options(max.print = .Machine$integer.max))
+
+#material as fixed
+Model=lmer(variable ~ Material+(1|Material:Project)+(1|Project)+(1|Rep), data=Emerge, REML=TRUE)
+#ANOVA<-anova(Model)
+Summary<-summary(Model, cor=FALSE)
+BLUP<-capture.output(ranef(Model, cor=FALSE))
+BLUP=data.frame(BLUP)
+ANOVA=data.frame(ANOVA)
+Summary=data.frame(Summary)
+capture.output(Model,file="Model_MatFixed_SAMNAM_DaysAfterPlanting.txt", options(max.print = .Machine$integer.max))
+capture.output(BLUP, file="BLUP_SAMNAM_DaysAfterPlanting.txt", options(max.print = .Machine$integer.max))
+capture.output(Summary, file="Summary_SAMNAM_DaysAfterPlanting.txt", options(max.print = .Machine$integer.max))
+#capture.output(ANOVA, file="ANOVA_MatFixed_SAMNAM_DaysAfterPlanting.txt", options(max.print = .Machine$integer.max))
+
+#################################################
+Emerge <- read.table((file.choose()), header=T, sep="\t")
+#attach(Emerge)
+Emerge <-(na.omit(Emerge))
+head(Emerge)
+variable<-Emerge$Protein
+Material<-Emerge$Material
+Rep<-Emerge$Rep
+Project<-Emerge$Project
+
+iteration <- 39
+ii<- Emerge$Protein
+
+for (ii in 10:ncol(Emerge)){
+  Model = lmer(ii ~ Material + (1|Material:Project)+(1|Project)+(1|Rep), data=Emerge)
+  Summary <-summary(Model)
+  ANOVA<- anova(Model)
+  #EmergeBLUP_output <- ranef(Model)
+  #EmergeBLUP_output
+  AN<-capture.output(ANOVA, "ANOVA_SAMNAM.txt")
+  #SumEmerge <- summary(Summary)
+  SM<-capture.output(Summary, file = "Summary_SAMNAM.txt")
+  #write.table(EmergeBLUP_output,"EmergeBLUP_output.txt")
+  rbind(AN,SM)
+}
+
+#detach(Emerge)

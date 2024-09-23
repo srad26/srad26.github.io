@@ -1,0 +1,73 @@
+#install.packages("NAM")
+library(NAM)
+                    
+#Setting working directory                    
+setwd()
+
+#Genotypic data  (markers in row 1, material names in column 1, 0-1-2 aa-Aa-AA format)
+G = read.csv(file.choose(),header=TRUE) #load in the csv file
+#rownames(G)<-G$Marker #keeps row 1 names
+#as.matrix(dist(G[-1])) #keeps row 1 names
+#gen[gen <0]<- NA #turn any negative values into NA
+G<-na.omit(G) #omit any missing data
+gen = as.matrix(G) #keeps row 1 names
+is.matrix(gen) #checks to see if the data is in a matrix (aka the proper form)
+
+
+#Phenotypic data (material name is column 1, same order and same amount as genotype file)
+data=read.csv(file.choose(), header=TRUE) #load in the csv file
+data<-na.omit(data) #omit missing data
+Phenotype=as.numeric(data$Alanine) #define the phenotype of interest
+family=as.numeric(data$Family) #define the family of interest
+is.vector(Phenotype) #check to see if data is a vector (aka the proper form)
+is.numeric(family) #check to see if the family is numeric (aka the proper form)
+
+##updated 051624 for SAMNAM Project
+#list the number of markers per chromosome, must equal to total markers used in genotype file
+chr =c(240,302,257,244,265,289,298,350,238,290,252,232,345,251,271,213,237,341,292,249)
+is.numeric(chr) #check to make sure the data is numeric (aka the proper form)
+
+
+#GWAS model#
+eigNAM=eigX(gen=gen,fam=family) #create the eigNAM term
+Alanine_gwas=gwas2(y=Phenotype, gen=gen, fam=family, chr=NULL,EIG=eigNAM)
+Alanine_gwas=gwas2(y=Phenotype, gen=gen,fixed = FALSE) #run the GWAS/NAM and specify which data you are using and which are NULL
+
+score=Alanine_gwas$PolyTest$lrt
+
+#Plot the GWAS
+
+###FDR###
+plot(my_gwas, FDR=0.05)
+
+###BONFERRONI###
+
+num_markers = 5768
+plot(my_gwas, alpha=0.05/num_markers)
+
+
+#LRT score of each SNP
+SCORE = my_gwas_blue$PolyTest$lrt
+
+#$-LOG(P-value)$
+Pval = my_gwas$PolyTest$pval
+
+#Amount of variance explained by each marker
+Genetic_Var_each_SNP = my_gwas$PolyTest$var.snp
+Var_Explained_by_SNP = Genetic_Var_each_SNP / var(mat_16clm)
+
+
+#Export CSV file with all SNP statistics
+write.csv( my_gwas$PolyTest, "mat_clm16_snp_scores.csv")
+
+
+##### GWAS USING COVARIATE #####
+
+cov = read.table(file.choose(),header=TRUE,sep=",")
+
+cov_a = as.numeric(cov$BLUE)
+
+
+my_gwas = gwas2 (y,gen=gen,fam=family,chr=chr,cov=cov_a)
+
+plot(my_gwas, FDR=0.05)

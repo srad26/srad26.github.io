@@ -1,0 +1,23 @@
+#create a character vector
+my_vec<- c()"var1","var2","var3")
+
+#create an empty list to store results
+results_pvalue<-list()
+results_LOD_score<-list()
+results_manhattan<-list()
+#bare bones
+for (var_name in my_vec){
+  #code goes here
+  print(paste("Var name:", var_name))
+}
+
+for (i in 1:nrow(data)){
+  my_gwas=gwas2(y=Phenotype, gen=gen, fam=family, chr=chr,EIG=eigNAM) #run the GWAS/NAM analysis
+  plot(my_gwas)
+  Sys.sleep(30)
+  pval = my_gwas$PolyTest$pval
+  results_pvalue[[i]]<-pval
+  #results_pvalue[[i]]<-pvalue
+}
+results_pvalue
+capture.output(results_pvalue, file="pvalue.csv", options(max.print = .Machine$integer.max))

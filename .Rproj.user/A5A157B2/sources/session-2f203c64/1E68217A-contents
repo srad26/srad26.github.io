@@ -1,0 +1,24 @@
+```{r}
+
+```
+
+---
+title: "AllInOne Preprocessing Program"
+format: html
+editor: visual
+---
+
+```{my code for installing and getting started}
+##change global environment if needed so you have version 4.0.0 or older i used 4.3.1##
+install.packages("remotes")
+install.packages("golem")
+install.packages("shiny")
+install.packages("shinydashboard")
+install.packages("shiny-disconnect")
+install.packages("shinyjs")
+remotes::install_github('MohsenYN/AllInOne')
+##Chose not to update anything when prompted##
+AllInOne::run_app()
+
+
+```

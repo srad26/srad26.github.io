@@ -1,0 +1,74 @@
+#install.packages("NAM")
+library("NAM")
+
+#Setting working directory                    
+setwd()
+
+#Genotypic data  (markers in row 1, delete genotype name, but keep in same order as phenotype file)
+G = read.csv(file.choose(),header=TRUE) #load in the csv file
+gen = as.matrix(G) #sets data to matrix
+#Phenotypic data (must be in same order as genotype file)
+data=read.csv(file.choose(), header=TRUE) #load in the csv file
+data<-na.omit(data) #omit missing data
+Phenotype=as.numeric(data$Verbascose) #define the phenotype of interest
+family=as.numeric(data$Family) #define the families
+
+##updated 051624 for SAMNAM Project
+#list the number of markers per chromosome, must equal to total markers used in genotype file
+chr =c(240,302,257,244,265,289,298,350,238,290,252,232,345,251,271,213,237,341,292,249)
+
+##add covariate factor 
+#DAP<- as.numeric(data$DAP)
+
+##check to see if data are in the correct format, all should return "TRUE"
+is.matrix(gen) 
+is.vector(Phenotype) 
+is.numeric(family) 
+is.numeric(chr)
+#is.numeric(DAP)
+
+#parallelization
+plan(multisession, workers = ncores)
+Phenotype=as.numeric(data$Verbascose) #define the phenotype of interest
+
+#GWAS model#
+eigNAM=eigX(gen=gen,fam=family) #create the eigNAM term
+my_gwas=gwas2(y=Phenotype, gen=gen, fam=family, chr=chr,EIG=eigNAM) #run the GWAS/NAM analysis
+#Plot & Save the Manhattan Plot
+
+tiff(file="Verbascose_RB8.tiff", height=500, width=1000, units="px", pointsize = 20) #save manhattan plot as tiff file
+plot=plot(my_gwas, FDR=0.05, title("Verbascose (%)")) #plot the NAM/GWAS analysis to manhattan plot
+dev.off()#end the tiff function
+
+#$-LOG(P-value); variance per SNP; LOD; family imapct
+pval = my_gwas$PolyTest$pval
+variance =my_gwas$PolyTest$var.snp
+LOD=my_gwas$PolyTest$lod
+snp_fam_effect_1=my_gwas$PolyTest$eff.1 #run each of the families in this line, concat the results together
+snp_fam_effect_2=my_gwas$PolyTest$eff.2 #run each of the families in this line, concat the results together
+snp_fam_effect_3=my_gwas$PolyTest$eff.3 #run each of the families in this line, concat the results together
+snp_fam_effect_4=my_gwas$PolyTest$eff.4 #run each of the families in this line, concat the results together
+snp_fam_effect_6=my_gwas$PolyTest$eff.6 #run each of the families in this line, concat the results together
+
+#store data from all traits in data frames
+stats_combo=data.frame(pval,variance,LOD)
+snp_fam_effect_total=data.frame(snp_fam_effect_1,snp_fam_effect_2,snp_fam_effect_3,snp_fam_effect_4,snp_fam_effect_6)
+
+#capture outputs
+capture.output(stats_combo, file="stats_Verbascose_Rb8.csv", options(max.print = .Machine$integer.max))
+capture.output(snp_fam_effect_total, file="snp_fam_Verbascose_RB8.csv", options(max.print=.Machine$integer.max))
+
+####Amount of variance explained by each marker
+#Genetic_Var_each_SNP = Verbascose  _gwas$PolyTest$var.snp
+#Var_Explained_by_SNP = Genetic_Var_each_SNP / var(mat_16clm)
+
+
+##### GWAS USING COVARIATE #####
+
+#cov = read.table(file.choose(),header=TRUE,sep=",")
+
+#cov_a = as.numeric(cov$BLUE)
+
+#my_gwas = gwas2 (y,gen=gen,fam=family,chr=chr,cov=cov_a)
+
+#plot(my_gwas, FDR=0.05)

@@ -1,0 +1,65 @@
+#install.packages("NAM")
+library("NAM")
+library("writexl")
+
+#Setting working directory                    
+setwd()
+
+#Genotypic data  (markers in row 1, delete genotype name, but keep in same order as phenotype file)
+G = read.csv(file.choose(),header=TRUE) #load in the csv file
+gen = as.matrix(G) #sets data to matrix
+#Phenotypic data (must be in same order as genotype file)
+data=read.csv(file.choose(), header=TRUE) #load in the csv file
+data<-na.omit(data) #omit missing data
+Phenotype=as.numeric(data$Alanine) #define the phenotype of interest
+family=as.numeric(data$Family) #define the families
+
+##updated 051624 for SAMNAM Project
+#list the number of markers per chromosome, must equal to total markers used in genotype file
+chr =c(240,302,257,244,265,289,298,350,238,290,252,232,345,251,271,213,237,341,292,249)
+
+##check to see if data are in the correct format, all should return "TRUE"
+is.matrix(gen) 
+is.vector(Phenotype) 
+is.numeric(family) 
+is.numeric(chr) 
+
+#GWAS model#
+eigNAM=eigX(gen=gen,fam=family) #create the eigNAM term
+my_gwas=gwas2(y=Phenotype, gen=gen, fam=family, chr=chr,EIG=eigNAM) #run the GWAS/NAM analysis
+
+#Plot the GWAS
+###FDR###
+plot(my_gwas, FDR=0.05)
+
+
+###BONFERRONI###
+##markers updated for SAMNAM on 052024
+markers = 5456
+plot(Alanine_gwas, alpha=0.05/markers)
+
+#LRT score of each SNP
+SCORE = Alanine_gwas$PolyTest$lrt
+
+#$-LOG(P-value)$
+Pval = Alanine_gwas$PolyTest$pval
+
+#Amount of variance explained by each marker
+Genetic_Var_each_SNP = Alanine_gwas$PolyTest$var.snp
+Var_Explained_by_SNP = Genetic_Var_each_SNP / var(mat_16clm)
+
+
+#Export CSV file with all SNP statistics
+write.csv( my_gwas$PolyTest, "mat_clm16_snp_scores.csv")
+
+
+##### GWAS USING COVARIATE #####
+
+cov = read.table(file.choose(),header=TRUE,sep=",")
+
+cov_a = as.numeric(cov$BLUE)
+
+
+my_gwas = gwas2 (y,gen=gen,fam=family,chr=chr,cov=cov_a)
+
+plot(my_gwas, FDR=0.05)
