@@ -1,6 +1,6 @@
 ---
 website: 
-  title: "Code Repository"
+  title: "Data Analytics & Code Repository"
   # navbar:
   #   background: primary
   #   search: true
@@ -8,6 +8,15 @@ about:
   template: solana
 format: html
 editor: visual
+listing:
+  contents: posts
+  sort: "date desc"
+  type: grid
+  categories: true
+  sort-ui: false
+  filter-ui: false
+page-layout: full
+title-block-banner: true
 # draft: false
 freeze: true
 ---
@@ -34,7 +43,7 @@ I have found [CMplot](https://github.com/YinLiLin/CMplot)and [ggplot2](https://g
 
 ![An example of a density plot created using the code below via [ggplot2](https://ggplot2.tidyverse.org/).](densityplot.JPG){fig-align="left" width="4.68in"}
 
-```{r eval=FALSE}         
+```{r eval=FALSE}
 ##install packages
 install.packages("tidyverse")
 install.packages("ggplot2")
@@ -59,7 +68,7 @@ basicplot+theme_minimal()+labs(title="Title") +scale_fill_discrete(name="legend 
 
 ![An example of a boxplot created using the code below via [ggplot2](https://ggplot2.tidyverse.org/).](boxplotexample.JPG){width="3.08in"}
 
-```{r eval=FALSE}         
+```{r eval=FALSE}
 ##install packages
 install.packages("ggprism")
 install.packages("patchwork")
@@ -109,7 +118,7 @@ ZZZ<-ZZ+theme_minimal(base_size = 12, base_family = "TT Times New Roman")+coord_
 
 ![An example of a manhattan plot made with the code below via [CMplot](https://github.com/YinLiLin/CMplot).](manhattanexample.JPG){width="9.17in"}
 
-```{r eval=FALSE}       
+```{r eval=FALSE}
 ##install packages
 install.packages("CMplot")
 
@@ -132,7 +141,7 @@ ylim=c(0,14)
 
 ![An example of a QQ plot made with the code below, via [CMplot](https://github.com/YinLiLin/CMplot).](QQexample.JPG){width="3.9in"}
 
-```{r eval=FALSE}          
+```{r eval=FALSE}
 ##install packages
 install.packages("CMplot")
 
@@ -155,7 +164,7 @@ ylim=c(0,14)
 
 There are a number of packages available for GWAS analysis, but I have become fond of the [GAPIT](https://github.com/jiabowang/GAPIT) package. I've used the BLINK method in my own research as it is currently the most powerful computationally and has a lower risk of false positives than other models. You will find the code I used for GWAS analysis via BLINK below.
 
-```{r eval=FALSE}        
+```{r eval=FALSE}
 ##install packages
 install.packages("gplots")
 devtools::install_github("SFUStatgen/LDheatmap")
